@@ -59,8 +59,8 @@ class Route
         return "/{$controller}/{$action}";
     }
 
-    public static function redirect(string $url){
-        header("Location: $url");
+    public static function redirect($controller, $action){
+        header('Location: ' . url($controller, $action));
         exit();
     }
 }
