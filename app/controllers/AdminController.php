@@ -1,11 +1,18 @@
 <?php
-
+namespace app\controllers;
 use app\core\AbstractController;
 
 class AdminController extends AbstractController
 {
+
+    public function __construct()
+    {
+        parent::__construct('admin');
+    }
+
+
     public function index()
     {
-        // TODO: Implement index() method.
+        $this->view->render('admin');
     }
 }

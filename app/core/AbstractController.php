@@ -14,8 +14,8 @@ abstract class AbstractController implements indexable
     /**
      * AbstractController constructor
      */
-    public function __construct()
+    public function __construct($template)
     {
-        $this->view = new View();
+        $this->view = new View($template);
     }
 }
