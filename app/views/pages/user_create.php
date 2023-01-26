@@ -12,6 +12,7 @@
         <li><input type="submit" value="Create"/></li>
     </ul>
 </form>
+<a href="<?= url('user', 'index')?>">Back</a>
 
 
 

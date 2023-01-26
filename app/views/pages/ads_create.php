@@ -8,3 +8,4 @@
     <input type="file" name="" accept=""/>
     <input type="submit"/>
 </form>
+<a href="<?= url('ads', 'index')?>">Back</a>
