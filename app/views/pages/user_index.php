@@ -1,16 +1,21 @@
-<h2>User Main Page</h2>
+<div class="w3-panel">
+    <h2>User Main Page</h2>
+</div>
 
-<a href="<?= url('user', 'create') ?>">Create new user</a>
+<div class="w3-panel">
+    <a class="w3-bar-item w3-button w3-round w3-green" href="<?= url('user', 'create') ?>">Create new user</a>
+</div>
 
-<table class="w3-table w3-striped w3-border">
-    <thead>
+<div class="w3-panel">
+    <table class="w3-table w3-striped w3-border">
+        <thead>
         <tr class="w3-green">
             <th>#</th>
             <th>Name</th>
             <th>Action</th>
         </tr>
-    </thead>
-    <tbody>
+        </thead>
+        <tbody>
         <?php if (count($users) > 0) :?>
             <?php foreach ($users as $user) :?>
                 <tr>
@@ -25,5 +30,6 @@
                 </tr>
             <?php endforeach; ?>
         <?php endif;?>
-    </tbody>
-</table>
+        </tbody>
+    </table>
+</div>
