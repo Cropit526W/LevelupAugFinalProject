@@ -13,37 +13,66 @@ class UserController extends AdminController
         $this->model = new UserModel();
     }
 
-    public function index()
+    /**
+     * Display all by user
+     * @return void
+     */
+    public function index() : void
     {
-        $this->view->render('user_index');
+        $users = $this->model->all();
+        $this->view->render(
+            'user_index',
+            [
+                'users' => $users,
+            ]
+        );
     }
 
-    public function login()
-    {
-        $result = $this->model->get();
-        //TODO validation
-        Route::redirect('user', 'index'); #if validation ok
-    }
+//    public function login()
+//    {
+//        var_dump('UserController');
+//        exit();
+//
+//        $result = $this->model->get();
+//
+//        //TODO validation
+//        Route::redirect('user', 'index'); #if validation ok
+//    }
 
-    public function create()
+    /**
+     * Opening the form for creating a new user
+     * @return void
+     */
+    public function create() : void
     {
         $this->view->render('user_create');
     }
 
-    public function store()
+    /**
+     * Saving a new user
+     * @return void
+     */
+    public function store() : void
     {
         $user = filter_input_array(INPUT_POST,
-        [
-            'login'=>FILTER_DEFAULT,
-        ]
+            [
+                'login'=>FILTER_DEFAULT,
+                'pass'=>FILTER_DEFAULT,
+            ]
         );
+
         $this->model->add($user);
-        Route::redirect('user', 'create');
+        Route::redirect('user', 'index');
     }
 
-    public function destroy()
+    /**
+     * Deleting a user by id
+     * @return void
+     */
+    public function destroy() : void
     {
-        $this->model->del();
+        $id = filter_input(INPUT_POST, 'id');
+        $this->model->delete($id);
         Route::redirect('user', 'index');
     }
 }
