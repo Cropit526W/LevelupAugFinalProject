@@ -6,7 +6,8 @@ class Route
 {
     const CONTROLLER_NAMESPACE = 'app\controllers\\';
 
-    public static function init(){
+    public static function init() : void
+    {
 
         $requestURI = $_SERVER['REQUEST_URI'];
 
@@ -43,23 +44,27 @@ class Route
         self::callAction($controller, $actionName);
     }
 
-    public static function notFound() {
+    public static function notFound() : void
+    {
         http_response_code(404);
         // TODO 404 page
         exit();
     }
 
-    private static function callAction(indexable $controller, $action) {
+    private static function callAction(indexable $controller, $action) : void
+    {
         $controller->$action();
     }
 
-    public static function url(string $controller = null, string $action = null) {
+    public static function url(string $controller = null, string $action = null) : string
+    {
         $controller = $controller??'index';
         $action = $action??'index';
         return "/{$controller}/{$action}";
     }
 
-    public static function redirect($controller, $action){
+    public static function redirect($controller, $action) : void
+    {
         header('Location: ' . url($controller, $action));
         exit();
     }
