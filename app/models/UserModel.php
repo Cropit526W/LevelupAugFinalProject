@@ -19,4 +19,18 @@ class UserModel extends Model
         }
         return $result;
     }
+
+    public function add(array $user)
+    {
+        //TODO get func with elements from $_POST
+        //TODO I suggest do it with prepared queries
+    }
+
+    public function del()
+    {
+        //TODO del func and use $stmt->bind_param cause we have a variable in the query
+        //TODO $stmt = $this->db->prepare("DELETE FROM tasks WHERE id = ?");
+        //        $stmt->bind_param('i', $_POST['id']);
+        //        $stmt->execute();
+    }
 }
