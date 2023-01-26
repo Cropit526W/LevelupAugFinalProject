@@ -1,16 +1,15 @@
-<h2>Here we're creating new users</h2>
-<h3>Here will be a form, where new users must be creating</h3>
-<h3>And here will be a table with all users, where must be username, and action 'delete user'</h3>
+<h2>Creat new user</h2>
 
-<li class="form">Click to create new user<i class="fa fa-angle-down pull-right"></i></li>
-<form action="" method="post" class="dropdown-form">
-    <ul>
-        <label for="login">Login</label>
-        <li><input type="text" name="login"/></li>
-        <label for="pass">Password</label>
-        <li><input type="password" name="pass"/></li>
-        <li><input type="submit" value="Create"/></li>
-    </ul>
+<form class="w3-container" action="<?= url('user', 'store') ?>" method="post">
+        <div class="w3-panel">
+            <label for="login">Login</label>
+            <input class="w3-input w3-border w3-animate-input" type="text" name="login" id="login"/>
+            <label for="pass">Password</label>
+            <input class="w3-input w3-border w3-animate-input" type="password" name="pass" id="pass"/>
+        </div>
+        <div class="w3-panel">
+            <input class="w3-button w3-green w3-round" type="submit" value="Create"/>
+        </div>
 </form>
 <a href="<?= url('user', 'index')?>">Back</a>
 
