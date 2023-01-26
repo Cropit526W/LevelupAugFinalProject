@@ -10,13 +10,7 @@
         <title>Document</title>
     </head>
     <body>
-        <header><h1><a href="/">Final project</a></h1></header>
-        <nav>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="<?= url('task', 'index') ?>">Tasks</a></li>
-            </ul>
-        </nav>
+        <header><h1><a href="/">Bulletin board</a></h1></header>
     <main>
         <?php include_once self::getPagePath() ?>
     </main>
