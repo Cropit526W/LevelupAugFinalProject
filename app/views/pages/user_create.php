@@ -1,6 +1,6 @@
 <h2>Creat new user</h2>
 
-<form class="w3-container" action="<?= url('user', 'store') ?>" method="post">
+<form class="w3-container" action="<?= url('user', 'store') ?>" method="post" autocomplete="new-password">
         <div class="w3-panel">
             <label for="login">Login</label>
             <input class="w3-input w3-border w3-animate-input" type="text" name="login" id="login"/>
