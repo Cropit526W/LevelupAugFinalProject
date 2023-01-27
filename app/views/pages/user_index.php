@@ -20,13 +20,15 @@
             <?php foreach ($users as $user) :?>
                 <tr>
                     <td><?= $user['id'] ?></td>
-                    <td><?= $user['login'] ?></td>
-                    <td>
-                        <form action="<?= url('user', 'destroy') ?>" method="post">
-                            <input type="hidden" name="id" value="<?= $user['id'] ?>"/>
-                            <button class="w3-button w3-red w3-round"><i class="fa fa-trash"></i></button>
-                        </form>
-                    </td>
+                    <td><?= $user['login'];?></td>
+                    <?php if (!$user['main']) :?>
+                        <td>
+                            <form action="<?= url('user', 'destroy') ?>" method="post">
+                                <input type="hidden" name="id" value="<?= $user['id'] ?>"/>
+                                <button class="w3-button w3-red w3-round"><i class="fa fa-trash"></i></button>
+                            </form>
+                        </td>
+                    <?php endif; ?>
                 </tr>
             <?php endforeach; ?>
         <?php endif;?>
