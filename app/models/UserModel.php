@@ -12,21 +12,16 @@ class UserModel extends Model
      */
     public function get() : array
     {
-        if (!empty($_POST['login']))
+        $stmt = $this->db->prepare("SELECT login FROM users");
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $users = [];
+        while ($user = $result->fetch_assoc())
         {
-            $stmt = $this->db->prepare("SELECT login FROM users");
-            $stmt->execute();
-            $result = $stmt->get_result();
-
-            $users = [];
-            while ($user = $result->fetch_assoc())
-            {
-                $users[] = $user;
-            }
-
-        }else {
-            exit('oops!');
+            $users[] = $user;
         }
+
         return $users;
     }
 
@@ -59,7 +54,8 @@ class UserModel extends Model
     public function add(array $user) : void
     {
         if (!$this->isUser($user)) {
-            $sql = "INSERT INTO users (login, pass) VALUES ('{$user['login']}', '{$user['pass']}');";
+            $user['main'] = $user['main'] ?? 0;
+            $sql = "INSERT INTO users (login, pass, main) VALUES ('{$user['login']}', '{$user['pass']}', '{$user['main']}');";
             $result = $this->db->query($sql);
             if (!$result) {
                 // TODO create log
