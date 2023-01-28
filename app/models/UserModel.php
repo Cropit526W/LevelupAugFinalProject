@@ -3,6 +3,7 @@
 namespace app\models;
 use app\core\Model;
 use app\core\Route;
+use database\CreateDB;
 use mysqli;
 class UserModel extends Model
 {
@@ -55,11 +56,15 @@ class UserModel extends Model
     {
         if (!$this->isUser($user)) {
             $user['main'] = $user['main'] ?? 0;
-            $sql = "INSERT INTO users (login, pass, main) VALUES ('{$user['login']}', '{$user['pass']}', '{$user['main']}');";
-            $result = $this->db->query($sql);
-            if (!$result) {
+            $sql = "INSERT INTO users (login, pass, main) 
+                    VALUES ('{$user['login']}', '{$user['pass']}', '{$user['main']}');";
+            $this->db->query($sql);
+            $result = mysqli_affected_rows($this->db) !== 1;
+            if ($result) {
                 // TODO create log
                 exit('some problem with insert user');
+            } else {
+                header('Location: /admin');
             }
         } else {
             // TODO have user;

@@ -2,7 +2,9 @@
 
 namespace app\core;
 
+use database\CreateDB;
 use mysqli;
+use mysqli_sql_exception;
 
 class Model
 {
@@ -10,6 +12,11 @@ class Model
 
     public function __construct()
     {
-        $this->db = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+        try{
+            $this->db = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+        } catch (mysqli_sql_exception){
+            CreateDB::create();
+            $this->db = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+        }
     }
 }
