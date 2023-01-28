@@ -70,9 +70,15 @@ class Route
         return "/{$controller}/{$action}";
     }
 
-    public static function redirect($controller, $action) : void
+    public static function redirect($controller, $action, $get = null) : void
     {
-        header('Location: ' . url($controller, $action));
-        exit();
+        if($get){
+            header('Location: ' . url($controller, $action) . '?' . $get);
+            exit();
+        } else {
+            header('Location: ' . url($controller, $action));
+            exit();
+        }
+
     }
 }

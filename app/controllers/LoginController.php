@@ -32,11 +32,15 @@ class LoginController extends AbstractController
             $user = $this->userModel->getByLogin($_POST['login']);
             if(!empty($user)){
                 $user = $user[0];
+            } else {
+                Route::redirect('login', 'index', 'error=2');
             }
             if(password_verify($_POST['pass'], $user['pass'])){
                 $_SESSION['authorized'] = true;
                 $_SESSION['userId'] = $user['id'];
                 Route::redirect('admin', 'index');
+            } else {
+                Route::redirect('login', 'index', 'error=1');
             }
         }
     }
