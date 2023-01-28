@@ -39,7 +39,7 @@ class Validator
      */
     public function userErrors($user) : array
     {
-        if ($this->model->isUser($user)) {
+        if ($this->model->is($user)) {
             $this->errors[] = 'This user already exists in the database';
         }
         return $this->errors;

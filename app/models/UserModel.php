@@ -3,9 +3,6 @@
 namespace app\models;
 
 use app\core\Model;
-use app\core\Route;
-use database\CreateDB;
-use mysqli;
 
 class UserModel extends Model
 {
@@ -53,7 +50,7 @@ class UserModel extends Model
      * @param $user
      * @return bool
      */
-    public function isUser($user): bool
+    public function is($user): bool
     {
         $sql = $this->query(
             [
@@ -72,7 +69,7 @@ class UserModel extends Model
      */
     public function add(array $user): void
     {
-        if (!$this->isUser($user)) {
+        if (!$this->is($user)) {
             $user['main'] = $user['main'] ?? 0;
             $user['pass'] = password_hash($user['pass'], PASSWORD_DEFAULT);
             $sql = "INSERT INTO users (login, pass, main) 
