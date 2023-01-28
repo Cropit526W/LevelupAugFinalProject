@@ -21,7 +21,7 @@ class UserController extends AdminController
      */
     public function index() : void
     {
-        $sql = $this->model->queryAll();
+        $sql = $this->model->query();
         $users = $this->model->get($sql);
         $this->view->render(
             'user_index',

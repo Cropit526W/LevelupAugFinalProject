@@ -10,22 +10,23 @@ use mysqli;
 class UserModel extends Model
 {
     /**
-     * Request all users
+     * User request
+     * @param array $params
      * @return string
      */
-    public function queryAll() : string
+    public function query(array $params = []) : string
     {
-        return "SELECT * FROM users";
-    }
+        $sql = "SELECT * FROM users";
 
-    /**
-     * User request by login
-     * @param $login
-     * @return string
-     */
-    public function queryByLogin($login) : string
-    {
-        return "SELECT * FROM users WHERE login = '$login'";
+        if (count($params) > 0) {
+            $sql .= " WHERE ";
+            foreach ($params as $param => $value) {
+                $sql .= "$param = '$value' AND";
+            }
+            $sql = substr($sql,0,-4);
+        }
+
+        return $sql;
     }
 
     /**
@@ -54,7 +55,11 @@ class UserModel extends Model
      */
     public function isUser($user): bool
     {
-        $sql = $this->queryByLogin($user['login']);
+        $sql = $this->query(
+            [
+                'login'=> $user['login'],
+            ]
+        );
         $users = $this->get($sql);
 
         return in_array($user['login'], array_column($users, 'login'));
@@ -97,10 +102,4 @@ class UserModel extends Model
         $stmt->execute();
     }
 
-    public function getByLogin($login)
-    {
-        $sql = $this->queryByLogin($login);
-
-        return $this->db->query($sql)->fetch_all(MYSQLI_ASSOC);
-    }
 }
