@@ -1,32 +1,33 @@
 <?php
 
 namespace app\models;
+
 use app\core\Model;
 use app\core\Route;
 use database\CreateDB;
 use mysqli;
+
 class UserModel extends Model
 {
     /**
      * Let's get all the logins from the database
      * @return array
      */
-    public function get() : array
+    public function get(): array
     {
         $stmt = $this->db->prepare("SELECT login FROM users");
         $stmt->execute();
         $result = $stmt->get_result();
 
         $users = [];
-        while ($user = $result->fetch_assoc())
-        {
+        while ($user = $result->fetch_assoc()) {
             $users[] = $user;
         }
 
         return $users;
     }
 
-    public function isUser($user) : bool
+    public function isUser($user): bool
     {
         $users = $this->get();
         return in_array($user['login'], array_column($users, 'login'));
@@ -52,10 +53,11 @@ class UserModel extends Model
      * @param array $user
      * @return void
      */
-    public function add(array $user) : void
+    public function add(array $user): void
     {
         if (!$this->isUser($user)) {
             $user['main'] = $user['main'] ?? 0;
+            $user['pass'] = password_hash($user['pass'], PASSWORD_DEFAULT);
             $sql = "INSERT INTO users (login, pass, main) 
                     VALUES ('{$user['login']}', '{$user['pass']}', '{$user['main']}');";
             $this->db->query($sql);
@@ -76,10 +78,17 @@ class UserModel extends Model
      * @param $id
      * @return void
      */
-    public function delete($id) : void
+    public function delete($id): void
     {
-       $stmt = $this->db->prepare("DELETE FROM users WHERE id = ?");
+        $stmt = $this->db->prepare("DELETE FROM users WHERE id = ?");
         $stmt->bind_param('i', $_POST['id']);
         $stmt->execute();
+    }
+
+    public function getByLogin($login)
+    {
+        $sql = "SELECT * FROM users WHERE login = '$login'";
+
+        return $this->db->query($sql)->fetch_all(MYSQLI_ASSOC);
     }
 }

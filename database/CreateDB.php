@@ -11,7 +11,6 @@ class CreateDB
     public function __construct()
     {
         $this->db = new mysqli(DB_HOST, DB_USER, DB_PASS, '');
-        
     }
 
     public static function create()

@@ -8,7 +8,7 @@ class Route
 
     public static function init() : void
     {
-
+        session_start();
         $requestURI = $_SERVER['REQUEST_URI'];
 
         $requestUriWithoutSearch = explode('?', $requestURI)[0];
@@ -31,10 +31,17 @@ class Route
             $actionName = strtolower($pathComponents[1]);
         }
 
+        if($controllerName === 'admin' && empty($_SESSION['authorized'])){
+            $controllerName = 'login';
+            $actionName = 'index';
+        }
+
         $controllerClass = self::CONTROLLER_NAMESPACE.ucfirst($controllerName).'Controller';
         if (!class_exists($controllerClass)) {
             self::notFound();
         }
+
+
 
         $controller = new $controllerClass();
         if (!method_exists($controller, $actionName)) {

@@ -10,16 +10,12 @@ class AdminController extends AbstractController
     public function __construct()
     {
         parent::__construct('admin');
-        $this->addAdmin();
     }
 
     public function index()
     {
         $this->view->render(
-            'admin',
-            [
-                'user' => [],
-            ]
+            'admin_index'
         );
     }
 
@@ -37,7 +33,7 @@ class AdminController extends AbstractController
      * Let's add the admin user to the databases
      * @return void
      */
-    public function addAdmin() : void
+    public static function addAdmin() : void
     {
         $userModel = new UserModel();
         $userModel->add(

@@ -14,16 +14,12 @@
     <body>
         <header>
             <h2>Admin panel</h2>
+            <?php if(!empty($_SESSION['authorized'])){ ?>
+                <a href="<?= \app\core\Route::url('login', 'logout'); ?>">Log out</a>
+            <?php } ?>
         </header>
         <main>
-            <?php if (empty($user)) :?>
-                <?php include_once self::getPagePath() ?>
-            <?php else :?>
-                <div class="w3-bar">
-                    <a class="w3-bar-item w3-button w3-teal" href="<?= url('user', 'index')?>">Users</a>
-                    <a class="w3-bar-item w3-button w3-teal" href="<?= url('ads', 'index')?>">Ads</a>
-                </div>
-            <?php endif ?>
+            <?php include_once self::getPagePath() ?>
         </main>
         <script src="/js/createNewUser.js"></script>
     </body>
