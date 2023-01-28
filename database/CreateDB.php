@@ -11,25 +11,27 @@ class CreateDB
     public function __construct()
     {
         $this->db = new mysqli(DB_HOST, DB_USER, DB_PASS, '');
+        
     }
 
     public static function create()
     {
         $createDb = new CreateDB();
-        $createDb->createDb();
-        $createDb->createTables();
+        $dbName = DB_NAME;
+        $createDb->createDb($dbName);
+        $createDb->createTables($dbName);
     }
 
-    protected function createDb()
+    protected function createDb($dbName)
     {
-        $sql = "CREATE DATABASE if not exists final";
+        $sql = "CREATE DATABASE if not exists $dbName";
 
         $this->db->query($sql);
     }
 
-    protected function createTables()
+    protected function createTables($dbName)
     {
-        $users = "CREATE TABLE if not exists final.users 
+        $users = "CREATE TABLE if not exists $dbName.users 
                 (
                     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
                     login VARCHAR(60) NOT NULL, 
@@ -40,7 +42,7 @@ class CreateDB
 
         $this->db->query($users);
 
-        $authors = "CREATE TABLE IF NOT EXISTS final.authors
+        $authors = "CREATE TABLE IF NOT EXISTS $dbName.authors
                     (
                         id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                         name VARCHAR(255) NOT NULL,
@@ -50,37 +52,37 @@ class CreateDB
 
         $this->db->query($authors);
 
-        $phones = "CREATE TABLE IF NOT EXISTS final.phones
+        $phones = "CREATE TABLE IF NOT EXISTS $dbName.phones
                    (
                         id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                         number VARCHAR(13),
                         author_id BIGINT UNSIGNED NOT NULL,
                         created_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
-                        FOREIGN KEY (author_id) REFERENCES final.authors(id)
+                        FOREIGN KEY (author_id) REFERENCES $dbName.authors(id)
                    )";
 
         $this->db->query($phones);
 
-        $ads = "CREATE TABLE IF NOT EXISTS final.ads
+        $ads = "CREATE TABLE IF NOT EXISTS $dbName.ads
                 (
                     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                     name VARCHAR(255) NOT NULL,
                     text TEXT NOT NULL,
                     author_id BIGINT UNSIGNED NOT NULL,  
                     created_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
-                    FOREIGN KEY (author_id) REFERENCES final.authors(id)
+                    FOREIGN KEY (author_id) REFERENCES $dbName.authors(id)
                 )";
 
         $this->db->query($ads);
 
-        $photos = "CREATE TABLE IF NOT EXISTS final.photos
+        $photos = "CREATE TABLE IF NOT EXISTS $dbName.photos
                    (
                        id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                        name VARCHAR(255) NOT NULL,
                        url VARCHAR(2083) NOT NULL,
                        ad_id BIGINT UNSIGNED NOT NULL,
                        created_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
-                       FOREIGN KEY (ad_id) REFERENCES final.ads(id)
+                       FOREIGN KEY (ad_id) REFERENCES $dbName.ads(id)
                    )";
 
         $this->db->query($photos);
