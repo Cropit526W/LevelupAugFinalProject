@@ -10,12 +10,32 @@ use mysqli;
 class UserModel extends Model
 {
     /**
-     * Let's get all the logins from the database
+     * Request all users
+     * @return string
+     */
+    public function queryAll() : string
+    {
+        return "SELECT * FROM users";
+    }
+
+    /**
+     * User request by login
+     * @param $login
+     * @return string
+     */
+    public function queryByLogin($login) : string
+    {
+        return "SELECT * FROM users WHERE login = '$login'";
+    }
+
+    /**
+     * Let's get users from the database
+     * @param string $methodName
      * @return array
      */
-    public function get(): array
+    public function get(string $query): array
     {
-        $stmt = $this->db->prepare("SELECT login FROM users");
+        $stmt = $this->db->prepare($query);
         $stmt->execute();
         $result = $stmt->get_result();
 
@@ -27,25 +47,17 @@ class UserModel extends Model
         return $users;
     }
 
+    /**
+     * Check if the user is in the database
+     * @param $user
+     * @return bool
+     */
     public function isUser($user): bool
     {
-        $users = $this->get();
-        return in_array($user['login'], array_column($users, 'login'));
-    }
+        $sql = $this->queryByLogin($user['login']);
+        $users = $this->get($sql);
 
-    /**
-     * Get all users
-     * @return array
-     */
-    public function all()
-    {
-        $sql = "SELECT * FROM users;";
-        $result = $this->db->query($sql);
-        if (!$result) {
-            // TODO create log
-            exit('some problem with select user');
-        }
-        return $result->fetch_all(MYSQLI_ASSOC);
+        return in_array($user['login'], array_column($users, 'login'));
     }
 
     /**
@@ -87,7 +99,7 @@ class UserModel extends Model
 
     public function getByLogin($login)
     {
-        $sql = "SELECT * FROM users WHERE login = '$login'";
+        $sql = $this->queryByLogin($login);
 
         return $this->db->query($sql)->fetch_all(MYSQLI_ASSOC);
     }
