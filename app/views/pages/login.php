@@ -1,4 +1,4 @@
-<form class="w3-container" action="<?= url('admin', 'login')?>" method="post">
+<form class="w3-container" action="<?= url('login', 'login')?>" method="post">
     <div class="w3-panel">
         <label for="login">Login:</label>
         <input class="w3-input w3-border w3-animate-input" type="text" name="login" id="login" required autofocus/>
