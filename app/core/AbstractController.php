@@ -15,6 +15,11 @@ abstract class AbstractController implements indexable
     protected $model;
 
     /**
+     * @var Validator
+     */
+    protected $validate;
+
+    /**
      * AbstractController constructor
      */
     public function __construct($template)
