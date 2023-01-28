@@ -12,7 +12,7 @@ class Validator
             $this->errors[] = 'Name can not be empty';
         }
         if (strlen($name)<5) {
-            $this->errors[] = 'Name must be greatest then 10 characters';
+            $this->errors[] = 'Name must be greater then 10 characters';
         }
         if (count($this->errors)>0){
             return false;
