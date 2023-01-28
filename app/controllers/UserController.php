@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\core\Route;
+use app\core\Validator;
 use app\models\UserModel;
 
 class UserController extends AdminController
@@ -11,6 +12,7 @@ class UserController extends AdminController
     {
         parent::__construct();
         $this->model = new UserModel();
+        $this->validate = new Validator();
     }
 
     /**
@@ -19,25 +21,16 @@ class UserController extends AdminController
      */
     public function index() : void
     {
-        $users = $this->model->all();
+        $sql = $this->model->queryAll();
+        $users = $this->model->get($sql);
         $this->view->render(
             'user_index',
             [
                 'users' => $users,
-            ]
+                'errors' => [],
+            ],
         );
     }
-
-//    public function login()
-//    {
-//        var_dump('UserController');
-//        exit();
-//
-//        $result = $this->model->get();
-//
-//        //TODO validation
-//        Route::redirect('user', 'index'); #if validation ok
-//    }
 
     /**
      * Opening the form for creating a new user
@@ -45,7 +38,12 @@ class UserController extends AdminController
      */
     public function create() : void
     {
-        $this->view->render('user_create');
+        $this->view->render(
+            'user_create',
+            [
+                'errors' => [],
+            ]
+        );
     }
 
     /**
@@ -61,8 +59,19 @@ class UserController extends AdminController
             ]
         );
 
-        $this->model->add($user);
-        Route::redirect('user', 'index');
+        $errors = $this->validate->userErrors($user);
+
+        if (count($errors) > 0) {
+            $this->view->render(
+                'user_create',
+                [
+                    'errors' => $errors,
+                ]
+            );
+        } else {
+            $this->model->add($user);
+            Route::redirect('user', 'index');
+        }
     }
 
     /**
