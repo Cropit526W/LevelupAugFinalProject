@@ -6,7 +6,7 @@ class Route
 {
     const CONTROLLER_NAMESPACE = 'app\controllers\\';
 
-    public static function init() : void
+    public static function init(): void
     {
         session_start();
         $requestURI = $_SERVER['REQUEST_URI'];
@@ -31,16 +31,17 @@ class Route
             $actionName = strtolower($pathComponents[1]);
         }
 
-        if($controllerName === 'admin' && empty($_SESSION['authorized'])){
+        if (self::ifTryingToAccessAdmin($controllerName, $actionName)) {
             $controllerName = 'login';
             $actionName = 'index';
+        } else if (self::isAuthorized() && $controllerName === 'login' && $actionName !== 'logout'){
+            self::redirect('admin', 'index');
         }
 
-        $controllerClass = self::CONTROLLER_NAMESPACE.ucfirst($controllerName).'Controller';
+            $controllerClass = self::CONTROLLER_NAMESPACE . ucfirst($controllerName) . 'Controller';
         if (!class_exists($controllerClass)) {
             self::notFound();
         }
-
 
 
         $controller = new $controllerClass();
@@ -51,28 +52,44 @@ class Route
         self::callAction($controller, $actionName);
     }
 
-    public static function notFound() : void
+    public static function ifTryingToAccessAdmin($controllerName, $actionName)
+    {
+        return (
+            (
+                $controllerName !== 'index'
+            )
+            && $actionName !== 'login'
+            && !self::isAuthorized()
+        );
+    }
+
+    public static function isAuthorized()
+    {
+        return !empty($_SESSION['authorized']);
+    }
+
+    public static function notFound(): void
     {
         http_response_code(404);
         // TODO 404 page
         exit();
     }
 
-    private static function callAction(indexable $controller, $action) : void
+    private static function callAction(indexable $controller, $action): void
     {
         $controller->$action();
     }
 
-    public static function url(string $controller = null, string $action = null) : string
+    public static function url(string $controller = null, string $action = null): string
     {
-        $controller = $controller??'index';
-        $action = $action??'index';
+        $controller = $controller ?? 'index';
+        $action = $action ?? 'index';
         return "/{$controller}/{$action}";
     }
 
-    public static function redirect($controller, $action, $get = null) : void
+    public static function redirect($controller, $action, $get = null): void
     {
-        if($get){
+        if ($get) {
             header('Location: ' . url($controller, $action) . '?' . $get);
             exit();
         } else {
