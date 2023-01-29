@@ -34,4 +34,5 @@
         <?php endif;?>
         </tbody>
     </table>
+    <a href="<?= url('admin', 'index')?>">Back</a>
 </div>
