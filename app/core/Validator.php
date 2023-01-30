@@ -43,7 +43,7 @@ class Validator
      * @param $user
      * @return array
      */
-    public function userErrors($user) : array
+    public function userErrors($user): array
     {
         if ($this->model->is($user)) {
             $this->errors[] = 'This user already exists in the database';
@@ -53,25 +53,31 @@ class Validator
 
     /**
      * Returns a list of errors about photos
-     * @param $file
+     * @param $files
      * @return array
      */
-    public function fileValidate($file):array
+    public function fileValidate($files): ?array
     {
-        if (!isset($_FILES['photo'])) {
-            $this->adsPhotoErrors[] = 'Фото не загружено !';
-        } else
-            if ($file['error'] != UPLOAD_ERR_OK) {
-                $this->adsPhotoErrors[] = self::UPLOAD_ERROR_DESCRIPTION_LIST[$file['error']];
-            } else {
-                if (!in_array($file['type'], self::PHOTO_UPLOAD_AVAILABLE_TYPES)) {
-                    $this->adsPhotoErrors[] = 'Формат файла не соответствует разрешенному !';
+        if (!isset($files)) {
+            if (!isset($file['name'])) {
+                $this->adsPhotoErrors[] = 'Фото не загружено !';
+            } else
+                if ($file['error'] != UPLOAD_ERR_OK) {
+                    $this->adsPhotoErrors[] = self::UPLOAD_ERROR_DESCRIPTION_LIST[$file['error']];
+                } else {
+                    if (!in_array($file['type'], self::PHOTO_UPLOAD_AVAILABLE_TYPES)) {
+                        $this->adsPhotoErrors[] = 'Формат файла не соответствует разрешенному !';
+                    }
+                    if ($file['size'] > self::PHOTO_UPLOAD_MAX_SIZE) {
+                        $this->adsPhotoErrors[] = 'Размер файла превышает разрешенный !';
+                    }
                 }
-                if ($file['size'] > self::PHOTO_UPLOAD_MAX_SIZE) {
-                    $this->adsPhotoErrors[] = 'Размер файла превышает разрешенный !';
-                }
-            }
-            return $this->adsPhotoErrors;
+        }
+//        foreach ($files as $file) {
+
+//        }
+
+        return $this->adsPhotoErrors;
     }
 
     /**
@@ -80,7 +86,7 @@ class Validator
      * @param $description
      * @return array
      */
-    public function textValidator($headline, $description, $author, $phone):array
+    public function textValidator($headline, $description, $author, $phone): array
     {
         if (empty($headline)) {
             $this->adsTextErrors[] = 'Не введён заголовок !';
