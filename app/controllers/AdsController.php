@@ -18,8 +18,11 @@ class AdsController extends AdminController
 
     public function index()
     {
-//        $this->model->getAll();
-        $this->view->render('ads_index');
+        $adsList = $this->model->getAll();
+        $this->view->render('ads_index', [
+            'adsList' => $adsList,
+        ]
+        );
     }
 
     public function create()
@@ -29,11 +32,19 @@ class AdsController extends AdminController
 
     public function store()
     {
-
-        $file = $_FILES['photos[]'];
-        if(count($file)>1){
-            for($i=1;$i<count($file);$i++){
-
+        $file = $_FILES['photos'];
+        $fileTest = [];
+        $file_count = count($file['name']);
+        $file_keys = array_keys($file);
+//        if(count($file)>1){
+//            foreach ($file as $elem) {
+//                foreach ($elem as $item) {
+//                }
+//            }
+//        }
+        for ($i = 0; $i<$file_count;$i++) {
+            foreach ($file_keys as $key) {
+                $fileTest[$i][$key] = $file[$key][$i];
             }
         }
         $headline = filter_input(INPUT_POST, 'headline');
@@ -53,19 +64,19 @@ class AdsController extends AdminController
             Route::redirect('ads', 'create');
 
         }else{
-            //$this->model->textDbAdd($headline, $description, $author, $phone);
-            //$this->model->photoDbAdd();
-            $this->model->photoDirAdd($file);
-            var_dump($_REQUEST);
-            var_dump($_FILES);
-            //Route::redirect('index', 'index');
+            $this->model->textDbAdd($headline, $description, $author, $phone);
+//            $this->model->photoDbAdd();
+            $this->model->photoDirAdd($fileTest);
+//            var_dump($_REQUEST);
+//            var_dump($_FILES);
+            Route::redirect('index', 'index');
         }
     }
 
     public function destroy()
     {
-        //TODO
-//        $this->model->del();
+        $this->model->del();
+        Route::redirect('ads', 'index');
     }
 
     public function edit()
