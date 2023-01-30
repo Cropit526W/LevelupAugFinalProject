@@ -79,9 +79,7 @@ class CreateDB
                        id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                        name VARCHAR(255) NOT NULL,
                        url VARCHAR(2083) NOT NULL,
-                       ad_id BIGINT UNSIGNED NOT NULL,
-                       created_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
-                       FOREIGN KEY (ad_id) REFERENCES $dbName.ads(id)
+                       created_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL
                    )";
 
         $this->db->query($photos);
