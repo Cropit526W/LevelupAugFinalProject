@@ -19,41 +19,51 @@ class AdsModel extends Model
 
     public function getAll()
     {
-        $sql = 'SELECT * FROM advertisements';
-
-        return $this->db->query($sql)->fetch_all(MYSQLI_ASSOC);
+        $sql = 'SELECT * FROM ads';
+        $result = $this->db->query($sql);
+        $ads = [];
+        while ($row = $result->fetch_assoc()) {
+            $ads[] = $row;
+        }
+        return $ads;
     }
 
-    public function photoDirAdd($file){
+    public function photoDirAdd($files){
 
-        $photoErrors = $this->validate->fileValidate($file);
+        $photoErrors = $this->validate->fileValidate($files);
         if (count($photoErrors) == 0) {
-
-            $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
-            $fileName = uniqid().'.'.$extension;
-            $filePath = self::PHOTO_UPLOAD_DIR . '/' . $fileName;
-            //self::photoDbAdd($fileName, $filePath, 1);
-            if (!move_uploaded_file($file['tmp_name'], $filePath)) {
-                $photoErrors[] = 'Tmp file was not moved';
+            foreach ($files as $file) {
+                $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+                $fileName = uniqid().'.'.$extension;
+                $filePath = self::PHOTO_UPLOAD_DIR . '/' . $fileName;
+                self::photoDbAdd($fileName, $filePath);
+                if (!move_uploaded_file($file['tmp_name'], $filePath)) {
+                    $photoErrors[] = 'Tmp file was not moved';
+                }
             }
+            //TODO excemptions and logs
         }
 
     }
 
-    public function photoDbAdd($name, $path, $ad_id){
-        $sql = "insert into photos (name, url, ad_id) values ('{$name}', '{$path}', '{$ad_id}')";
+    public function photoDbAdd($name, $path){
+        $sql = "insert into photos (name, url) values ('{$name}', '{$path}')";
         $this->db->query($sql);
+        //TODO validation
     }
 
     public function textDbAdd($headline, $description, $author, $phone)
     {
         $sql = "insert into ads (name, description, author, phone) values ('{$headline}', '{$description}', '{$author}', '{$phone}')";
         $this->db->query($sql);
+        //TODO validation
     }
 
     public function del()
     {
-        //TODO
+        $stmt = $this->db->prepare("DELETE FROM ads WHERE id = ?");
+        $stmt->bind_param('i', $_POST['id']);
+        $stmt->execute();
     }
 
     public function edit()
