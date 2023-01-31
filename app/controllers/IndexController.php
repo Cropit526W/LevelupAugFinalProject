@@ -12,6 +12,15 @@ class IndexController extends \app\core\AbstractController
 
     public function index()
     {
-        $this->view->render('index_index');
+        $allAdsForIndexPage = $this->model->getAll();
+        $allPhotos = $this->model->getAllPthotos();
+        $this->view->render('index_index',
+            [
+                'allAdsForIndexPage' => $allAdsForIndexPage,
+                'allPhotos' => $allPhotos,
+            ]
+        );
     }
+
+
 }

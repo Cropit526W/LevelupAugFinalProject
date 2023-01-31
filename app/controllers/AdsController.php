@@ -12,7 +12,6 @@ class AdsController extends AdminController
     public function __construct()
     {
         parent::__construct();
-        $this->model = new AdsModel();
         $this->validate = new Validator();
     }
 

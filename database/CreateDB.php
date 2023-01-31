@@ -69,7 +69,8 @@ class CreateDB
                     description TEXT NOT NULL,
                     author VARCHAR(255) NOT NULL,
                     phone VARCHAR(16) NOT NULL,
-                    created_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL
+                    created_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
+                    vendor_code BIGINT UNSIGNED UNIQUE NOT NULL
                 )";
 
         $this->db->query($ads);
@@ -79,7 +80,8 @@ class CreateDB
                        id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                        name VARCHAR(255) NOT NULL,
                        url VARCHAR(2083) NOT NULL,
-                       created_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL
+                       created_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
+                       vendor_code BIGINT UNSIGNED NOT NULL
                    )";
 
         $this->db->query($photos);

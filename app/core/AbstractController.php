@@ -2,6 +2,8 @@
 
 namespace app\core;
 
+use app\models\AdsModel;
+
 abstract class AbstractController implements indexable
 {
     /**
@@ -24,6 +26,7 @@ abstract class AbstractController implements indexable
      */
     public function __construct($template)
     {
+        $this->model = new AdsModel();
         $this->view = new View($template);
     }
 }

@@ -9,6 +9,8 @@ class AdsModel extends Model
 {
     const PHOTO_UPLOAD_DIR = 'images/photos';
 
+    private int $vendor_code;
+
     protected object $validate;
 
     public function __construct()
@@ -27,6 +29,18 @@ class AdsModel extends Model
         }
         return $ads;
     }
+
+    public function getAllPthotos()
+    {
+        $sql = "SELECT photos.url, ads.name, photos.vendor_code FROM photos INNER JOIN ads ON ads.vendor_code = photos.vendor_code;";
+        $result = $this->db->query($sql);
+        $photos = [];
+        while ($url = $result->fetch_assoc()) {
+            $photos[] = $url;
+        }
+        return $photos;
+    }
+
 
     public function photoDirAdd($files){
 
@@ -47,17 +61,22 @@ class AdsModel extends Model
     }
 
     public function photoDbAdd($name, $path){
-        $sql = "insert into photos (name, url) values ('{$name}', '{$path}')";
+        $sql = "insert into photos (name, url, vendor_code) values ('{$name}', '{$path}', {$this->vendor_code})";
         $this->db->query($sql);
         //TODO validation
     }
 
     public function textDbAdd($headline, $description, $author, $phone)
     {
-        $sql = "insert into ads (name, description, author, phone) values ('{$headline}', '{$description}', '{$author}', '{$phone}')";
+        $sql = "insert into ads (name, description, author, phone, vendor_code) values ('{$headline}', '{$description}', '{$author}', '{$phone}', {$this->getRandom()})";
         $this->db->query($sql);
         //TODO validation
     }
+
+//    public function setPhotosId($id)
+//    {
+//        $sql = "INSERT INTO photos (ad_id) VALUES ({'$id'})";
+//    }
 
     public function del()
     {
@@ -69,6 +88,16 @@ class AdsModel extends Model
     public function edit()
     {
         //TODO
+    }
+
+//    public function getPhotos($author, $created_at)
+//    {
+////        $stmt = $this->db->prepare("SELECT photos.url FROM photos INNER JOIN");
+//    }
+
+    public function getRandom()
+    {
+        return $this->vendor_code = rand(1, 9223372036854775807);
     }
 
 }

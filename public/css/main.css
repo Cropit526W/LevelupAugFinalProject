@@ -1,0 +1,15 @@
+.mainPageIndexWrapper{
+    display: grid;
+    min-height: 100vh;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: 1fr 1fr 1fr 1fr;
+}
+
+.detailsAboutAd {
+    display: none;
+}
+
+label{
+    font-size: 16px;
+    font-weight: bolder;
+}
