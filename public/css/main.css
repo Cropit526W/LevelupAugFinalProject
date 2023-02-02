@@ -1,15 +1,128 @@
+body {
+}
+
+main {
+}
+
+a {
+    text-decoration: none;
+}
+
+h1{
+    font-family: Tahoma;
+    font-weight: bolder;
+}
+
 .mainPageIndexWrapper{
     display: grid;
     min-height: 100vh;
     grid-template-columns: 1fr 1fr;
-    grid-auto-rows: 1fr 1fr 1fr 1fr;
-}
-
-.detailsAboutAd {
-    display: none;
+    grid-auto-rows: 1fr 1fr 1fr 1fr 1fr;
+    justify-items: center;
 }
 
 label{
-    font-size: 16px;
+    font-family: Tahoma sans-serif;
+    font-size: 18px;
     font-weight: bolder;
+    line-height: 1;
+}
+
+header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0 16px;
+}
+
+nav{
+    display: flex;
+    flex-direction: row;
+}
+
+header li {
+    list-style: none;
+    padding: 0 10px;
+    font-family: Tahoma sans-serif;
+    font-weight: bolder;
+    line-height: 3.5;
+}
+
+header ul {
+    display: flex;
+    flex-direction: row;
+}
+
+
+div {
+    font-family: Tahoma sans-serif;
+    /*margin: 0 15px;*/
+    padding: 0 15px;
+}
+
+div.description {
+    padding: 0;
+    width: 600px;
+    height: auto;
+}
+
+
+.box {
+    margin: 35px auto;
+}
+
+img{
+    width: 600px;
+    height: 390px;
+}
+.slider-wrapper {
+    z-index: 9;
+    width: 600px;
+    height: 390px;
+    overflow: hidden;
+    margin: 0 0 7px;
+    position: relative;
+    border: 2px solid #000000;
+    border-radius: 15px;
+    padding: 0;
+}
+
+.slider-wrapper ul, .slider-wrapper li {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+
+.slider-wrapper ul {
+    width: 9999px;
+}
+
+.slider-wrapper ul li {
+    list-style-type: none;
+    float: left;
+    width: 600px;
+    height: 390px;;
+}
+
+.slider-wrapper .nav{
+    position: absolute;
+    left: 15px;
+    bottom: 12px;
+}
+
+.slider-wrapper .nav span {
+    opacity: 0.9;
+    background: white;
+    margin: 0 8px 0 0;
+    width: 16px;
+    height: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    overflow: hidden;
+    display: block;
+    float: left;
+    box-shadow: 0 1px 2px #000;
+}
+.slider-wrapper .nav span.on {
+    background: #000;
 }
