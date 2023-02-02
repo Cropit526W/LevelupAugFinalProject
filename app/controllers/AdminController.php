@@ -2,6 +2,7 @@
 namespace app\controllers;
 
 use app\core\AbstractController;
+use app\core\Route;
 use app\models\UserModel;
 
 class AdminController extends AbstractController
@@ -12,21 +13,24 @@ class AdminController extends AbstractController
         parent::__construct('admin');
     }
 
-    public function index()
+    /**
+     * Let's display view admin_index.php
+     * @return void
+     */
+    public function index() : void
     {
         $this->view->render(
             'admin_index'
         );
     }
 
-    public function login()
+    /**
+     * Let's display template admin.php
+     * @return void
+     */
+    public function login() : void
     {
-        $this->view->render(
-            'admin',
-            [
-                'user' => [1],
-            ]
-        );
+        $this->view->render('admin');
     }
 
     /**
@@ -35,13 +39,18 @@ class AdminController extends AbstractController
      */
     public static function addAdmin() : void
     {
+        $login = 'admin';
+
         $userModel = new UserModel();
-        $userModel->add(
-            [
-                'login' => 'admin',
-                'pass' => 'admin',
-                'main' => 1,
-            ]
-        );
+        if (empty($userModel->get($login))){
+            $userModel->add(
+                [
+                    'login' => $login,
+                    'pass' => 'admin',
+                    'main' => 1,
+                ]
+            );
+            Route::redirect('admin', 'index');
+        }
     }
 }
