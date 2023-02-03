@@ -93,6 +93,12 @@ class AdsController extends AdminController
 
     public function destroy()
     {
+        if (!empty($_POST)) {
+            $url = current($_POST);
+            $ad_id = array_key_first($_POST);
+            $this->model->delPhotoFromAd($url);
+            Route::redirect('ads', 'index#'.$ad_id);
+        }
         $this->model->del();
         Route::redirect('ads', 'index');
     }

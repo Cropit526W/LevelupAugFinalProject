@@ -103,6 +103,13 @@ class AdsModel extends Model
         $stmt->execute();
     }
 
+    public function delPhotoFromAd($url)
+    {
+        $stmt = $this->db->prepare("DELETE FROM photos WHERE url = ?");
+        $stmt->bind_param('s', $url);
+        $stmt->execute();
+    }
+
     public function edit()
     {
         $stmt = $this->db->prepare("UPDATE ads SET name = ?, description = ?, author = ?, phone = ? WHERE id = ?");

@@ -44,6 +44,10 @@
                                         <?php if ($photo['name'] === $ad['name']):?>
                                             <div class="photosForUpdating">
                                                 <img src="<?= DIRECTORY_SEPARATOR.$photo['url']?>"/>
+                                                <form action="<?= url('ads', 'destroy')?>" method="post">
+                                                    <input type="hidden" name="<?= $ad['id']?>" value="<?= $photo['url']?>">
+                                                    <button><i class="fa fa-trash" style="font-size:24px"></i></button>
+                                                </form>
                                             </div>
                                         <?php endif;?>
                                     <?php endforeach;?>
@@ -51,15 +55,19 @@
 
 <!--                                    --><?php //endif;?>
                                 </div>
+                                <br> <!--del br-->
                                 <input type="submit" value="Apply"/>
                             </form>
-                            <div>
-                                <form action="<?= url('ads', 'store') ?>" method="post" enctype="multipart/form-data">
-                                    <input type="file" name="photos[]" accept="image/*" multiple onchange="this.form.submit()"/>
-                                    <?php session_start();?>
-                                    <?php $_SESSION['vendor_code'] = $ad['vendor_code']?>
-                                    <?php $_SESSION['ad_id'] = $ad['id']?>
-                                </form>
+                            <div class="plusFormForAddNewPhoto">
+                                <i class="fa fa-plus"></i>
+                                <div class="addNewPhoto">
+                                    <form class="addForm" action="<?= url('ads', 'store') ?>" method="post" enctype="multipart/form-data">
+                                        <input class="add" type="file" name="photos[]" accept="image/*" multiple onchange="this.form.submit()"/>
+                                        <?php session_start();?>
+                                        <?php $_SESSION['vendor_code'] = $ad['vendor_code']?>
+                                        <?php $_SESSION['ad_id'] = $ad['id']?>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </th>
