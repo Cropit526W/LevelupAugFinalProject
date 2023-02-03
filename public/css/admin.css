@@ -18,7 +18,7 @@
     opacity: 1;
     top: 50%;
     pointer-events: auto;
-    transition-duration: 500ms;
+    /*transition-duration: 500ms;*/
 }
 
 img {
@@ -34,3 +34,40 @@ img {
     grid-auto-rows: 1fr 1fr;
     justify-items: center;
 }
+
+div.addNewPhoto {
+    max-width: 194px;
+    height: 130px;
+    margin: 7px;
+    border: 2px solid #000000;
+    overflow: hidden;
+    opacity: 0;
+}
+
+form.addNewPhoto {
+    background-color: #fff;
+}
+
+input.add {
+    max-width: 194px;
+    height: 130px;
+}
+
+div.plusFormForAddNewPhoto {
+    max-width: 194px;
+    height: 130px;
+    margin: 7px;
+    border: 2px solid #000000;
+    overflow: hidden;
+    position: relative;
+    background-color: #e3e3e1;
+    margin: 15px auto;
+}
+
+.fa-plus {
+    position: absolute;
+    font-size: 140px;
+    left: 40px;
+    color: #b3b6b0;
+}
+
