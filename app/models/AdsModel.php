@@ -9,7 +9,7 @@ class AdsModel extends Model
 {
     const PHOTO_UPLOAD_DIR = 'images/photos';
 
-    private int $vendor_code;
+    public int $vendor_code;
 
     protected object $validate;
 
@@ -46,6 +46,7 @@ class AdsModel extends Model
 
         $photoErrors = $this->validate->fileValidate($files);
         if (count($photoErrors) == 0) {
+            $this->vendor_code = self::getRandom();
             foreach ($files as $file) {
                 $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
                 $fileName = uniqid().'.'.$extension;
@@ -60,6 +61,23 @@ class AdsModel extends Model
 
     }
 
+    public function updatedPhotoDirAdd($files, $vendorCode)
+    {
+        $this->vendor_code = $vendorCode;
+        $photoErrors = $this->validate->fileValidate($files);
+        if (count($photoErrors) == 0) {
+        }
+            foreach ($files as $file) {
+                $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+                $fileName = uniqid() . '.' . $extension;
+                $filePath = self::PHOTO_UPLOAD_DIR . '/' . $fileName;
+                self::photoDbAdd($fileName, $filePath);
+                if (!move_uploaded_file($file['tmp_name'], $filePath)) {
+                    $photoErrors[] = 'Tmp file was not moved';
+                }
+            }
+    }
+
     public function photoDbAdd($name, $path){
         $sql = "insert into photos (name, url, vendor_code) values ('{$name}', '{$path}', {$this->vendor_code})";
         $this->db->query($sql);
@@ -68,7 +86,7 @@ class AdsModel extends Model
 
     public function textDbAdd($headline, $description, $author, $phone)
     {
-        $sql = "insert into ads (name, description, author, phone, vendor_code) values ('{$headline}', '{$description}', '{$author}', '{$phone}', {$this->getRandom()})";
+        $sql = "insert into ads (name, description, author, phone, vendor_code) values ('{$headline}', '{$description}', '{$author}', '{$phone}', {$this->vendor_code})";
         $this->db->query($sql);
         //TODO validation
     }
@@ -87,7 +105,9 @@ class AdsModel extends Model
 
     public function edit()
     {
-        //TODO
+        $stmt = $this->db->prepare("UPDATE ads SET name = ?, description = ?, author = ?, phone = ? WHERE id = ?");
+        $stmt->bind_param('ssssi', $_GET['headline'], $_GET['description'], $_GET['author'], $_GET['phone'], $_GET['id']);
+        $stmt->execute();
     }
 
 //    public function getPhotos($author, $created_at)

@@ -18,11 +18,20 @@ class AdsController extends AdminController
     public function index()
     {
         $adsList = $this->model->getAll();
-        $this->view->render('ads_index', [
-            'adsList' => $adsList,
-        ]
+        $allPhotos = $this->model->getAllPthotos();
+        $this->view->render('ads_index',
+            [
+                'adsList' => $adsList,
+                'allPhotos' => $allPhotos,
+            ]
         );
     }
+
+//    public function modalWindowForEditAd()
+//    {
+//        $allPhotos = $this->model->getAllPthotos();
+//        $this->view->render('ads');
+//    }
 
     public function create()
     {
@@ -35,41 +44,51 @@ class AdsController extends AdminController
         $fileTest = [];
         $file_count = count($file['name']);
         $file_keys = array_keys($file);
-//        if(count($file)>1){
-//            foreach ($file as $elem) {
-//                foreach ($elem as $item) {
-//                }
-//            }
-//        }
-        for ($i = 0; $i<$file_count;$i++) {
+        for ($i = 0; $i < $file_count; $i++) {
             foreach ($file_keys as $key) {
                 $fileTest[$i][$key] = $file[$key][$i];
             }
         }
-        $headline = filter_input(INPUT_POST, 'headline');
-        $description = filter_input(INPUT_POST, 'description');
-        $author = filter_input(INPUT_POST, 'author');
-        $phone = filter_input(INPUT_POST, 'phone');
-        $adsTextErrors = $this->validate->textValidator($headline, $description, $author, $phone);
-        $adsPhotoErrors = $this->validate->fileValidate($file);
-        if(count($adsTextErrors) !== 0 || count($adsPhotoErrors) !== 0){
-            $this->view->render(
-                'ads_create',
-                [
-                    'adsTextErrors' => $adsTextErrors,
-                    'adsPhotoErrors' => $adsPhotoErrors,
-                ]
-            );
-            Route::redirect('ads', 'create');
-
-        }else{
-            $this->model->textDbAdd($headline, $description, $author, $phone);
-//            $this->model->photoDbAdd();
-            $this->model->photoDirAdd($fileTest);
-//            var_dump($_REQUEST);
-//            var_dump($_FILES);
-            Route::redirect('index', 'index');
+        if ($_SERVER['HTTP_REFERER'] !== 'http://levelupaugfinalproject1/ads/create') {
+            $adsPhotoErrors = $this->validate->fileValidate($file);
+            if (count($adsPhotoErrors) !== 0) {
+                $this->view->render(
+                    'ads_create',
+                    [
+                        'adsPhotoErrors' => $adsPhotoErrors,
+                    ]
+                );
+                Route::redirect('ads', 'create');
+            }
+            session_start();
+            $vendorCode = $_SESSION['vendor_code'];
+            $ad_id = $_SESSION['ad_id'];
+            unset($_SESSION['vendor_code']);
+            unset($_SESSION['ad_id']);
+            $this->model->updatedPhotoDirAdd($fileTest, $vendorCode);
+            Route::redirect('ads', 'index#'.$ad_id);
+        } else {
+            $headline = filter_input(INPUT_POST, 'headline');
+            $description = filter_input(INPUT_POST, 'description');
+            $author = filter_input(INPUT_POST, 'author');
+            $phone = filter_input(INPUT_POST, 'phone');
+            $adsTextErrors = $this->validate->textValidator($headline, $description, $author, $phone);
+            $adsPhotoErrors = $this->validate->fileValidate($file);
+            if (count($adsTextErrors) !== 0 || count($adsPhotoErrors) !== 0) {
+                $this->view->render(
+                    'ads_create',
+                    [
+                        'adsTextErrors' => $adsTextErrors,
+                        'adsPhotoErrors' => $adsPhotoErrors,
+                    ]
+                );
+                Route::redirect('ads', 'create');
+            }
         }
+        $this->model->photoDirAdd($fileTest);
+        $this->model->textDbAdd($headline, $description, $author, $phone);
+        Route::redirect('index', 'index');
+
     }
 
     public function destroy()
@@ -80,7 +99,7 @@ class AdsController extends AdminController
 
     public function edit()
     {
-        //TODO
-//        $this->model->edit();
+        $this->model->edit();
+        Route::redirect('ads', 'index');
     }
 }
