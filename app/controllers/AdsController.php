@@ -91,6 +91,10 @@ class AdsController extends AdminController
 
     }
 
+    /**
+     * delete selected ad
+     * @return void
+     */
     public function destroy()
     {
         $this->model->del();

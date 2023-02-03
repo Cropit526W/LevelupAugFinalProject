@@ -13,15 +13,28 @@ class AdsModel extends Model
 
     protected object $validate;
 
+
     public function __construct()
     {
         parent::__construct();
         $this->validate = new Validator();
+
     }
 
     public function getAll()
     {
-        $sql = 'SELECT * FROM ads';
+        $sql = "SELECT * FROM ads";
+        $result = $this->db->query($sql);
+        $ads = [];
+        while ($row = $result->fetch_assoc()) {
+            $ads[] = $row;
+        }
+        return $ads;
+    }
+
+    public function getAllIndexPage($from, $elements)
+    {
+        $sql = "SELECT * FROM ads LIMIT {$from}, {$elements}";
         $result = $this->db->query($sql);
         $ads = [];
         while ($row = $result->fetch_assoc()) {
@@ -115,7 +128,7 @@ class AdsModel extends Model
 ////        $stmt = $this->db->prepare("SELECT photos.url FROM photos INNER JOIN");
 //    }
 
-    public function getRandom()
+    public function getRandom():int
     {
         return $this->vendor_code = rand(1, 9223372036854775807);
     }

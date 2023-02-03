@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="/css/ads.css">
 <div class="mainPageIndexWrapper">
     <?php if (count($allAdsForIndexPage) != 0):?>
         <?php $iterationCount = 0?>
@@ -32,4 +33,7 @@
             </div>
         <?php endforeach;?>
     <?php endif;?>
+</div>
+<div>
+    <?= $pagesLinks; ?>
 </div>
