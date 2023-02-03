@@ -10,6 +10,7 @@
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
         <link rel="stylesheet" href="/css/admin_main.css">
+        <link rel="stylesheet" href="/css/admin.css">
     </head>
     <body>
         <header>
@@ -21,6 +22,7 @@
         <main>
             <?php include_once self::getPagePath() ?>
         </main>
-        <script src="/js/createNewUser.js"></script>
+<!--        <script src="/js/createNewUser.js"></script>-->
+        <script src="/js/sendFormWithoutSubmit.js"></script>
     </body>
 </html>

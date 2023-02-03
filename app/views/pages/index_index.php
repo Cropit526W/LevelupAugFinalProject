@@ -13,7 +13,7 @@
                         <?php endforeach;?>
                     </ul>
                 </div>
-                <div><?= $ad['name']?></div>
+                <div class="name"><?= $ad['name']?></div>
                 <div>
                     <label for="author">Author:</label>
                     <span><?= $ad['author']?></span>
@@ -27,7 +27,7 @@
                     <span><?= $ad['created_at']?></span>
                 </div>
                 <div class="detailsAboutAd-wrapper">
-                    <div class="description" "><?= $ad['description']?></div>
+                    <div class="description"><?= $ad['description']?></div>
                 </div>
             </div>
         <?php endforeach;?>

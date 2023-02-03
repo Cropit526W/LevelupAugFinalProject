@@ -21,6 +21,11 @@ h1{
     justify-items: center;
 }
 
+div.name{
+    font-size: 24px;
+    font-weight: bolder;
+}
+
 label{
     font-family: Tahoma sans-serif;
     font-size: 18px;
@@ -64,6 +69,7 @@ div.description {
     padding: 0;
     width: 600px;
     height: auto;
+    word-break: break-all;
 }
 
 
