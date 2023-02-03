@@ -22,8 +22,49 @@
                     <th>
                         <form action="<?= url('ads', 'destroy')?>" method="post">
                             <input type="hidden" name="id" value="<?= $ad['id']?>">
-                            <input type="submit" value="delete"/>
+                            <button><i class="fa fa-trash" style="font-size:24px"></i></button>
                         </form>
+                    </th>
+                    <th>
+                        <div class="modal_dialog" id="<?= $ad['id']?>">
+                            <a href="" class="close"><i class="fa fa-close"></i></span></a>
+                            <form action="<?= url('ads', 'edit') ?>" method="get">
+                                <input type="hidden" name="id" value="<?= $ad['id'] ?>"/>
+                                <div class="label"><label for="headline">Create a new title for ad:</label></div><br>
+                                <input type="text" class="input_new_headline" name="headline" value="<?= $ad['name'] ?>"/>
+                                <div class="label"><label for="description">Create a new description:</label></div><br>
+                                <textarea class="input_new_description" name="description"><?= $ad['description'] ?></textarea>
+                                <div class="label"><label for="name">Enter an author:</label></div><br>
+                                <input type="text" class="input_new_author" name="author" value="<?= $ad['author'] ?>"/>
+                                <div class="label"><label for="phone">Enter a new phone:</label></div><br>
+                                <input type="text" class="input_new_phone" name="phone" value="<?= $ad['phone'] ?>"/>
+                                <div class="label"><label for="photoList">Update photos:</label></div><br>
+                                <div class="photoList">
+                                    <?php foreach ($allPhotos as $photo):?>
+                                        <?php if ($photo['name'] === $ad['name']):?>
+                                            <div class="photosForUpdating">
+                                                <img src="<?= DIRECTORY_SEPARATOR.$photo['url']?>"/>
+                                            </div>
+                                        <?php endif;?>
+                                    <?php endforeach;?>
+<!--                                    --><?php //if(count($allPhotos) < 10):?>
+
+<!--                                    --><?php //endif;?>
+                                </div>
+                                <input type="submit" value="Apply"/>
+                            </form>
+                            <div>
+                                <form action="<?= url('ads', 'store') ?>" method="post" enctype="multipart/form-data">
+                                    <input type="file" name="photos[]" accept="image/*" multiple onchange="this.form.submit()"/>
+                                    <?php session_start();?>
+                                    <?php $_SESSION['vendor_code'] = $ad['vendor_code']?>
+                                    <?php $_SESSION['ad_id'] = $ad['id']?>
+                                </form>
+                            </div>
+                        </div>
+                    </th>
+                    <th>
+                        <a href="#<?= $ad['id']?>"><i class="fa fa-pencil-square-o" style="font-size:24px"></i></a>
                     </th>
                 </tr>
             <?php endforeach;?>

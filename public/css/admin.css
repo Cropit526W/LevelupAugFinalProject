@@ -1,0 +1,36 @@
+.modal_dialog{
+    position: fixed;
+    left: 50%;
+    top: -50%;
+    min-width: 70%;
+    min-height: 90vh;
+    border: 1px solid #000;
+    border-radius: 10px;
+    transform: translate(-50%, -50%);
+    z-index: 999;
+    pointer-events: none;
+    opacity: 0;
+    overflow: hidden;
+    background-color: #fff;
+}
+
+.modal_dialog:target {
+    opacity: 1;
+    top: 50%;
+    pointer-events: auto;
+    transition-duration: 500ms;
+}
+
+img {
+    max-width: 245px;
+    height: 130px;
+    margin: 7px;
+    border: 2px solid #000000;
+}
+
+.photoList {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-auto-rows: 1fr 1fr;
+    justify-items: center;
+}
