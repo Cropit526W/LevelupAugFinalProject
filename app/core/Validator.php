@@ -56,26 +56,18 @@ class Validator
      * @param $files
      * @return array
      */
-    public function fileValidate($files): ?array
+    public function fileValidate($file): array
     {
-        if (!isset($files)) {
-            if (!isset($file['name'])) {
-                $this->adsPhotoErrors[] = 'Фото не загружено !';
-            } else
-                if ($file['error'] != UPLOAD_ERR_OK) {
-                    $this->adsPhotoErrors[] = self::UPLOAD_ERROR_DESCRIPTION_LIST[$file['error']];
-                } else {
-                    if (!in_array($file['type'], self::PHOTO_UPLOAD_AVAILABLE_TYPES)) {
-                        $this->adsPhotoErrors[] = 'Формат файла не соответствует разрешенному !';
-                    }
-                    if ($file['size'] > self::PHOTO_UPLOAD_MAX_SIZE) {
-                        $this->adsPhotoErrors[] = 'Размер файла превышает разрешенный !';
-                    }
-                }
-        }
-//        foreach ($files as $file) {
+            if (empty($file['name'][0])) {
+                $this->adsPhotoErrors['no_photo'] = 'Фото не загружено !';
+            } elseif (!in_array($file['type'][0], self::PHOTO_UPLOAD_AVAILABLE_TYPES)) {
+                $this->adsPhotoErrors['extension'] = 'Формат файла не соответствует разрешенному !';
+            } elseif (empty($file['size'][0]) > self::PHOTO_UPLOAD_MAX_SIZE) {
+                $this->adsPhotoErrors['size'] = 'Размер файла превышает разрешенный !';
+            }
 
-//        }
+//                if ($file['error'] != UPLOAD_ERR_OK) {
+//                    $this->adsPhotoErrors['error'] = self::UPLOAD_ERROR_DESCRIPTION_LIST[$file['error']];
 
         return $this->adsPhotoErrors;
     }
@@ -89,22 +81,30 @@ class Validator
     public function textValidator($headline, $description, $author, $phone): array
     {
         if (empty($headline)) {
-            $this->adsTextErrors[] = 'Не введён заголовок !';
+            $this->adsTextErrors['headline'] = 'Не введён заголовок !';
         }
         if (empty($description)) {
-            $this->adsTextErrors[] = 'Не введено описание !';
+            $this->adsTextErrors['description'] = 'Не введено описание !';
         }
         if (empty($author)) {
-            $this->adsTextErrors[] = 'Не введён автор объявления !';
+            $this->adsTextErrors['author'] = 'Не введён автор объявления !';
         }
         if (empty($phone)) {
-            $this->adsTextErrors[] = 'Не введён номер телефона автора !';
+            $this->adsTextErrors['phone'] = 'Не введён номер телефона автора !';
         }
-        if ($phone < 10) {
-            $this->adsTextErrors[] = 'Номер телефона должен состоять не менее чем из 10 символов !';
+        if (strlen($phone) < 10) {
+            $this->adsTextErrors['countNumbersInPhone'] = 'Номер телефона должен состоять не менее чем из 10 символов !';
         }
         return $this->adsTextErrors;
     }
+
+    public function setErrors ($errorsInTextList, $errorsInFilesText): void
+    {
+        $errorsList = array_merge($errorsInFilesText, $errorsInTextList);
+        session_start();
+        $_SESSION['errorsList'] = $errorsList;
+    }
+
 
 
 }
