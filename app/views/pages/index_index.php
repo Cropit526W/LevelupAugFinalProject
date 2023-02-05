@@ -14,23 +14,28 @@
                         <?php endforeach;?>
                     </ul>
                 </div>
+                <div class="w3-container w3-green">
                 <div class="name"><?= $ad['name']?></div>
-                <div>
-                    <label for="author">Author:</label>
-                    <span><?= $ad['author']?></span>
                 </div>
-                <div>
-                    <label for="phone">№ Tel:</label>
-                    <span><?= $ad['phone']?></span>
+                <div class="aboutAd">
+                    <div>
+                        <label for="author">Author:</label>
+                        <span><?= $ad['author']?></span>
+                    </div>
+                    <div>
+                        <label for="phone">№ Tel:</label>
+                        <span><?= $ad['phone']?></span>
+                    </div>
+                    <div>
+                        <label for="created_at">Created:</label>
+                        <span><?= $ad['created_at']?></span>
+                    </div>
+                    <div class="detailsAboutAd-wrapper">
+                        <div class="description"><?= $ad['description']?></div>
+                    </div>
                 </div>
-                <div>
-                    <label for="created_at">Created:</label>
-                    <span><?= $ad['created_at']?></span>
                 </div>
-                <div class="detailsAboutAd-wrapper">
-                    <div class="description"><?= $ad['description']?></div>
-                </div>
-            </div>
+
         <?php endforeach;?>
     <?php endif;?>
 </div>

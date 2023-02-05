@@ -16,13 +16,13 @@
         <header>
             <h2>Admin panel</h2>
             <?php if(!empty($_SESSION['authorized'])){ ?>
-                <a href="<?= \app\core\Route::url('login', 'logout'); ?>">Log out</a>
+                <a href="<?= \app\core\Route::url('login', 'logout'); ?>"><i class="fa fa-sign-out"></i></a>
             <?php } ?>
         </header>
         <main>
             <?php include_once self::getPagePath() ?>
         </main>
 <!--        <script src="/js/createNewUser.js"></script>-->
-        <script src="/js/sendFormWithoutSubmit.js"></script>
+        <script src="/js/sliderForPhotoOnIndex.js"></script>
     </body>
 </html>
