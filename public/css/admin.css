@@ -1,10 +1,90 @@
+header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: #4CAF50;
+    color: white;
+    align-items: center;
+    padding: 0 20px;
+    border-bottom: 2px solid #ffffff;
+}
+
+header a{
+    text-decoration: none;
+}
+
+.fa-sign-out {
+    font-size: 24px;
+}
+
+.fa-trash {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.fa-pencil-square-o{
+        cursor: pointer;
+    font-size: 24px;
+}
+
+.w3-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    background-color: #4CAF50;
+    font-size: 24px;
+    border-bottom: 1px solid #ffffff;
+}
+
+div.newBulletin {
+    justify-content: left;
+    color: white;
+    padding: 0 0 0 20px;
+}
+
+div.backBox {
+    justify-content: left;
+    background-color: inherit;
+}
+
+div.newAdBox {
+    min-height: 70vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+div.newAdBox .w3-card-4 {
+    min-width: 80%;
+    margin-top: 30px;
+    margin-bottom: 3px;
+}
+
+.modal_dialog .w3-card-4 {
+    width: 100%;
+    height: auto;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+}
+
+.fa-close {
+    margin-left: 98%;
+    font-size: 24px;
+}
+
+.modal_dialog .w3-container {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    margin-bottom: 15px;
+}
+
 .modal_dialog{
     position: fixed;
     left: 50%;
     top: -50%;
-    min-width: 70%;
+    min-width: 100%;
     min-height: 90vh;
-    border: 1px solid #000;
+    /*border: 1px solid #000;*/
     border-radius: 10px;
     transform: translate(-50%, -50%);
     z-index: 999;
@@ -71,3 +151,16 @@ div.plusFormForAddNewPhoto {
     color: #b3b6b0;
 }
 
+#editForm label {
+    margin-left: 5px;
+    font-size: 18px;
+}
+
+#editForm input, #editForm textarea {
+    font-size:12px;
+}
+
+.label>label {
+    margin-left: 15px;
+    font-size: 18px;
+}

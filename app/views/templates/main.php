@@ -13,17 +13,15 @@
     </head>
     <body>
         <header>
-            <h1><a href="/">BULLETIN BOARD</a></h1>
-            <?php if (isset($_SESSION['authorized'])):?>
-                <nav>
-                    <ul>
-                        <li><a href="<?= url('ads', 'index')?>" data-text="All Ads">All Ads</li>
-                        <li><a href="<?= url('ads', 'create')?>" data-text="New Ad">New Ad</li>
-                        <li><a href="<?= url('user', 'index')?>" data-text="Users">Users</li>
-                        <li><a href="<?= url('login', 'logout')?>" data-text="Log out">Log out</a></li>
-                    </ul>
-                </nav>
-            <?php endif;?>
+                <h1><a href="/">BULLETIN BOARD</a></h1>
+                <?php if (isset($_SESSION['authorized'])):?>
+                    <div class="w3-bar w3-green">
+                        <a href="<?= url('ads', 'index')?>" class="w3-bar-item w3-button">All Ads</a>
+                        <a href="<?= url('ads', 'create')?>" class="w3-bar-item w3-button">New Ad</a>
+                        <a href="<?= url('user', 'index')?>" class="w3-bar-item w3-button">Users</a>
+                        <a href="<?= url('login', 'logout')?>" class="w3-bar-item w3-button"><i class="fa fa-sign-out"></i></a>
+                    </div>
+                <?php endif;?>
         </header>
     <main>
         <?php include_once self::getPagePath() ?>
