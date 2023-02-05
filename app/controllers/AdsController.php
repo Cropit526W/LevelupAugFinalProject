@@ -27,11 +27,6 @@ class AdsController extends AdminController
         );
     }
 
-//    public function modalWindowForEditAd()
-//    {
-//        $allPhotos = $this->model->getAllPthotos();
-//        $this->view->render('ads');
-//    }
 
     public function create()
     {
@@ -60,11 +55,8 @@ class AdsController extends AdminController
                 );
                 Route::redirect('ads', 'create');
             }
-            session_start();
-            $vendorCode = $_SESSION['vendor_code'];
-            $ad_id = $_SESSION['ad_id'];
-            unset($_SESSION['vendor_code']);
-            unset($_SESSION['ad_id']);
+            $vendorCode = current($_POST);
+            $ad_id = array_key_first($_POST);
             $this->model->updatedPhotoDirAdd($fileTest, $vendorCode);
             Route::redirect('ads', 'index#'.$ad_id);
         } else {
@@ -97,12 +89,13 @@ class AdsController extends AdminController
      */
     public function destroy()
     {
-        if (!empty($_POST)) {
+        if (empty($_POST['id'])) {
             $url = current($_POST);
             $ad_id = array_key_first($_POST);
             $this->model->delPhotoFromAd($url);
             Route::redirect('ads', 'index#'.$ad_id);
         }
+
         $this->model->del();
         Route::redirect('ads', 'index');
     }
