@@ -11,6 +11,7 @@
         <div class="w3-container w3-green">
             <h2>Create new bulletin</h2>
         </div>
+
         <form class="w3-container" action="<?= url('ads', 'store') ?>" method="post" enctype="multipart/form-data">
             <label for="headline">Title of bulletin</label>
             <input class="w3-input" type="text" name="headline" id="headline"/>

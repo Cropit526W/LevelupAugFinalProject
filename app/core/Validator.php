@@ -29,7 +29,7 @@ class Validator
 
     protected array $errors = [];
 
-    protected array $adsPhotoErrors = [];
+    public array $adsPhotoErrors = [];
 
     protected array $adsTextErrors = [];
 
@@ -98,13 +98,12 @@ class Validator
         return $this->adsTextErrors;
     }
 
-    public function setErrors ($errorsInTextList, $errorsInFilesText): void
+    public function setErrors ($errorsInFilesText = [], $errorsInTextList = []): void
     {
         $errorsList = array_merge($errorsInFilesText, $errorsInTextList);
         session_start();
         $_SESSION['errorsList'] = $errorsList;
     }
-
 
 
 }

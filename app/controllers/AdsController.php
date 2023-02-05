@@ -4,7 +4,7 @@ namespace app\controllers;
 
 use app\core\Route;
 use app\core\Validator;
-use app\models\AdsModel;
+
 
 class AdsController extends AdminController
 {
@@ -47,20 +47,15 @@ class AdsController extends AdminController
                 }
             }
             //TODO validate
-            if ($_SERVER['HTTP_REFERER'] !== 'http://levelupaugfinalproject1/ads/create') {
+            if ($_SERVER['REQUEST_URI'] !== url('ads', 'create')) {
                 $adsPhotoErrors = $this->validate->fileValidate($file);
+                $ad_id = array_key_first($_POST);
                 if (count($adsPhotoErrors) !== 0) {
-                    //TODO SESSION
-                    $this->view->render(
-                        'ads_create',
-                        [
-                            'adsPhotoErrors' => $adsPhotoErrors,
-                        ]
-                    );
-                    Route::redirect('ads', 'create');
+                    $this->validate->setErrors($adsPhotoErrors);
+                    Route::redirect('ads', 'index#'.$ad_id);
                 }
                 $vendorCode = current($_POST);
-                $ad_id = array_key_first($_POST);
+
                 $this->model->updatedPhotoDirAdd($fileTest, $vendorCode);
                 Route::redirect('ads', 'index#'.$ad_id);
             } else {
@@ -80,7 +75,6 @@ class AdsController extends AdminController
             Route::redirect('index', 'index');
         }
     }
-
 
     /**
      * delete selected ad
@@ -103,6 +97,16 @@ class AdsController extends AdminController
 
     public function edit()
     {
+        $headline = filter_input(INPUT_GET, 'headline');
+        $description = filter_input(INPUT_GET, 'description');
+        $author = filter_input(INPUT_GET, 'author');
+        $phone = filter_input(INPUT_GET, 'phone');
+        $ad_id = filter_input(INPUT_GET, 'id');
+        $adsTextErrors = $this->validate->textValidator($headline, $description, $author, $phone);
+        if (count($adsTextErrors) !== 0) {
+            $this->validate->setErrors($adsTextErrors);
+            Route::redirect('ads', 'index#'.$ad_id);
+        }
         $this->model->edit();
         Route::redirect('ads', 'index');
     }

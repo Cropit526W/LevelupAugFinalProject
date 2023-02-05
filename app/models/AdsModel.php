@@ -117,6 +117,11 @@ class AdsModel extends Model
         //TODO validation
     }
 
+//    public function setPhotosId($id)
+//    {
+//        $sql = "INSERT INTO photos (ad_id) VALUES ({'$id'})";
+//    }
+
     public function del()
     {
         $stmt = $this->db->prepare("DELETE FROM ads, photos USING ads INNER JOIN photos WHERE ads.id = ? AND ads.vendor_code = photos.vendor_code");
@@ -140,6 +145,7 @@ class AdsModel extends Model
         $stmt->execute();
         //TODO
     }
+
 
     public function getRandom():int
     {

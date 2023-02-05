@@ -48,6 +48,16 @@
                                 </div>
                             </div>
                             <div class="label"><label for="photoList">Update photos:</label></div><br>
+                            <?php session_start(); ?>
+                            <?php if (!empty($_SESSION['errorsList'])): ?>
+                                <?php $errorsList = $_SESSION['errorsList'];?>
+                                <?php unset($_SESSION['errorsList']);?>
+                                <div>
+                                    <?php foreach ($errorsList as $error):?>
+                                        <span class="errors"><?=$error?></span>
+                                    <?php endforeach;?>
+                                </div>
+                            <?php endif;?>
                                 <div class="photoList">
                                     <?php foreach ($allPhotos as $photo):?>
                                         <?php if ($photo['name'] === $ad['name']):?>
@@ -71,6 +81,8 @@
                                         </form>
                                     </div>
                                 </div>
+
+
                         </div>
                     </th>
                     <th>
