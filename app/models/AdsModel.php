@@ -111,7 +111,7 @@ class AdsModel extends Model
 
     public function del()
     {
-        $stmt = $this->db->prepare("DELETE FROM ads WHERE id = ?");
+        $stmt = $this->db->prepare("DELETE FROM ads, photos USING ads INNER JOIN photos WHERE ads.id = ? AND ads.vendor_code = photos.vendor_code");
         $stmt->bind_param('i', $_POST['id']);
         $stmt->execute();
     }
