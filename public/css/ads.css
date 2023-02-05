@@ -7,6 +7,9 @@
 }
 .pages ul li{
     padding: 8px;
-    border: 2px solid #000;
+    background-color: #4CAF50;
     margin: 0 6px;
+    color: white;
+    font-size: 18px;
+    font-weight: bolder;
 }

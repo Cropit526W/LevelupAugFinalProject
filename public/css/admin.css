@@ -164,3 +164,7 @@ div.plusFormForAddNewPhoto {
     margin-left: 15px;
     font-size: 18px;
 }
+
+div.error {
+    color: #e31c19;
+}
