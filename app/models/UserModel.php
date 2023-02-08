@@ -7,33 +7,20 @@ use app\core\Model;
 class UserModel extends Model
 {
     /**
-     * User request
-     * @param array $params
-     * @return string
+     * Database table name
+     * @var string
      */
-    public function query(array $params = []) : string
-    {
-        $sql = "SELECT * FROM users";
-
-        if (count($params) > 0) {
-            $sql .= " WHERE ";
-            foreach ($params as $param => $value) {
-                $sql .= "$param = '$value' AND";
-            }
-            $sql = substr($sql,0,-4);
-        }
-
-        return $sql;
-    }
+    protected string $table = 'users';
 
     /**
-     * Let's get users from the database
-     * @param string $methodName
+     * Let's get all users from the database
      * @return array
      */
-    public function get(string $query): array
+    public function all() : array
     {
-        $stmt = $this->db->prepare($query);
+        $sql = "SELECT * FROM $this->table";
+
+        $stmt = $this->db->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
 
@@ -46,57 +33,43 @@ class UserModel extends Model
     }
 
     /**
-     * Check if the user is in the database
-     * @param $user
-     * @return bool
+     * Let's get the user from the database
+     * @param string $login
+     * @return array|null
      */
-    public function is($user): bool
+    public function get(string $login) : array|null
     {
-        $sql = $this->query(
-            [
-                'login'=> $user['login'],
-            ]
-        );
-        $users = $this->get($sql);
-
-        return in_array($user['login'], array_column($users, 'login'));
+        $sql = "SELECT * FROM $this->table WHERE login = '$login' LIMIT 1";
+        $result = $this->db->query($sql);
+        return $result->fetch_assoc();
     }
 
     /**
-     * Add a new user to the database
+     * Add the new user to the database
      * @param array $user
      * @return void
      */
     public function add(array $user): void
     {
-        if (!$this->is($user)) {
-            $user['main'] = $user['main'] ?? 0;
-            $user['pass'] = password_hash($user['pass'], PASSWORD_DEFAULT);
-            $sql = "INSERT INTO users (login, pass, main) 
+        $user['main'] = $user['main'] ?? 0;
+        $user['pass'] = password_hash($user['pass'], PASSWORD_DEFAULT);
+        $sql = "INSERT INTO users (login, pass, main) 
                     VALUES ('{$user['login']}', '{$user['pass']}', '{$user['main']}');";
-            $this->db->query($sql);
-            $result = mysqli_affected_rows($this->db) !== 1;
-            if ($result) {
-                // TODO create log
-                exit('some problem with insert user');
-            } else {
-                header('Location: /admin');
-            }
-        } else {
-            // TODO have user;
-        }
+        $this->db->query($sql);
+        $result = mysqli_affected_rows($this->db) !== 1;
+        // TODO validate?
     }
 
     /**
      * Let's delete the user by id from the database
      * @param $id
-     * @return void
+     * @return bool
      */
-    public function delete($id): void
+    public function delete($id): bool
     {
-        $stmt = $this->db->prepare("DELETE FROM users WHERE id = ?");
-        $stmt->bind_param('i', $_POST['id']);
-        $stmt->execute();
+        $sql = "DELETE FROM $this->table WHERE id = $id;";
+        return $this->db->query($sql);
     }
+
 
 }

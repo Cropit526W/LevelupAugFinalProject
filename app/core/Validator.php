@@ -33,9 +33,32 @@ class Validator
 
     protected array $adsTextErrors = [];
 
+    protected $session;
+
     public function __construct()
     {
         $this->model = new UserModel();
+        $this->session = new Session();
+
+    }
+
+    public function validateName($name)
+    {
+        if (empty($name)) {
+            $this->errors[] = 'Name can not be empty';
+        }
+        if (strlen($name)<5) {
+            $this->errors[] = 'Name must be greater then 10 characters';
+        }
+        if (count($this->errors)>0){
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public function getErrors() {
+        return $this->errors;
     }
 
     /**
@@ -48,6 +71,19 @@ class Validator
         if ($this->model->is($user)) {
             $this->errors[] = 'This user already exists in the database';
         }
+        return $this->errors;
+    }
+
+    public function validateAddUser($user) : array
+    {
+        if (!empty($this->model->get($user['login']))) {
+            $this->errors[] = 'This user already exists in the database';
+        }
+
+        if (count($this->errors) > 0) {
+            $this->session->save('Add new user', $this->errors);
+        }
+
         return $this->errors;
     }
 
@@ -106,4 +142,15 @@ class Validator
     }
 
 
+
+    /**
+     * Returns a list of errors about delete the user
+     * @param string $msg
+     * @return void
+     */
+    public function validateDeleteUser(string $msg) : void
+    {
+        $this->errors[] = $msg;
+        $this->session->save('Delete user', $this->errors);
+    }
 }

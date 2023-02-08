@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\core\Route;
+use app\core\Session;
 use app\core\Validator;
 use app\models\UserModel;
 
@@ -16,38 +17,39 @@ class UserController extends AdminController
     }
 
     /**
-     * Display all by user
+     * Display all users
      * @return void
      */
     public function index() : void
     {
-        $sql = $this->model->query();
-        $users = $this->model->get($sql);
+        $users = $this->model->all();
+        $errors = Session::all('Delete user');
         $this->view->render(
             'user_index',
             [
                 'users' => $users,
-                'errors' => [],
+                'errors' => $errors,
             ],
         );
     }
 
     /**
-     * Opening the form for creating a new user
+     * Display the form for creating the new user
      * @return void
      */
     public function create() : void
     {
+        $errors = Session::all('Add new user');
         $this->view->render(
             'user_create',
             [
-                'errors' => [],
+                'errors' => $errors,
             ]
         );
     }
 
     /**
-     * Saving a new user
+     * Saving the new user
      * @return void
      */
     public function store() : void
@@ -59,29 +61,30 @@ class UserController extends AdminController
             ]
         );
 
-        $errors = $this->validate->userErrors($user);
+        $errors = $this->validate->validateAddUser($user);
 
         if (count($errors) > 0) {
-            $this->view->render(
-                'user_create',
-                [
-                    'errors' => $errors,
-                ]
-            );
-        } else {
+            Route::redirect('user', 'create');
+        } else if (empty($this->model->get($user['login']))) {
             $this->model->add($user);
             Route::redirect('user', 'index');
         }
     }
 
     /**
-     * Deleting a user by id
+     * Deleting the user by id
      * @return void
      */
     public function destroy() : void
     {
         $id = filter_input(INPUT_POST, 'id');
-        $this->model->delete($id);
+        $result = $this->model->delete($id);
+
+        if (!$result) {
+            $msg = "An error occurred while executing a query to the database";
+            $this->validate->validateDeleteUser($msg);
+        }
+
         Route::redirect('user', 'index');
     }
 }

@@ -34,4 +34,14 @@
         <?php endif;?>
         </tbody>
     </table>
+
+    <div class="w3-panel">
+        <?php if (count($errors) > 0) : ?>
+            <?php foreach ($errors as $error) : ?>
+                <div><?= $error ?></div>
+            <?php endforeach; ?>
+        <?php endif;?>
+    </div>
+
+    <a href="<?= url('admin', 'index')?>">Back</a>
 </div>

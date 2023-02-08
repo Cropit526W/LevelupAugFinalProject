@@ -2,6 +2,8 @@
 
 namespace database;
 
+use app\core\Route;
+use app\models\UserModel;
 use mysqli;
 
 class CreateDB
@@ -19,6 +21,7 @@ class CreateDB
         $dbName = DB_NAME;
         $createDb->createDb($dbName);
         $createDb->createTables($dbName);
+        $createDb->addAdmin();
     }
 
     protected function createDb($dbName)
@@ -85,5 +88,26 @@ class CreateDB
                    )";
 
         $this->db->query($photos);
+    }
+
+    /**
+     * Let's add the admin user to the databases
+     * @return void
+     */
+    private function addAdmin() : void
+    {
+        $login = 'admin';
+
+        $userModel = new UserModel();
+        if (empty($userModel->get($login))){
+            $userModel->add(
+                [
+                    'login' => $login,
+                    'pass' => 'admin',
+                    'main' => 1,
+                ]
+            );
+            Route::redirect('admin', 'index');
+        }
     }
 }

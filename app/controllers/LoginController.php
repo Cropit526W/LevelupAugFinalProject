@@ -16,30 +16,26 @@ class LoginController extends AbstractController
         $this->userModel = new UserModel();
     }
 
-    public function index()
+    /**
+     * Let's display view login.php
+     * @return void
+     */
+    public function index() : void
     {
-        $this->view->render(
-            'login',
-            [
-                'user' => [],
-            ]
-        );
+        $this->view->render('login');
     }
 
-    public function login()
+    /**
+     * Redirect to method Index of AdminController.php or method Index of LoginController.php with error
+     * @return void
+     */
+    public function login() : void
     {
         if(!empty($_POST['login']) && !empty($_POST['pass'])){
 
-            $sql = $this->userModel->query(
-                [
-                    'login'=> $_POST['login'],
-                ]
-            );
-            $user = $this->userModel->get($sql);
+            $user = $this->userModel->get($_POST['login']);
 
-            if(!empty($user)){
-                $user = $user[0];
-            } else {
+            if(is_null($user)){
                 Route::redirect('login', 'index', 'error=2');
             }
 
@@ -53,7 +49,12 @@ class LoginController extends AbstractController
         }
     }
 
-    public function logout(){
+    /**
+     * Redirect to method Index of LoginController.php
+     * @return void
+     */
+    public function logout() : void
+    {
         session_destroy();
         Route::redirect('login', 'index');
     }
