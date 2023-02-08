@@ -33,24 +33,4 @@ class AdminController extends AbstractController
         $this->view->render('admin');
     }
 
-    /**
-     * Let's add the admin user to the databases
-     * @return void
-     */
-    public static function addAdmin() : void
-    {
-        $login = 'admin';
-
-        $userModel = new UserModel();
-        if (empty($userModel->get($login))){
-            $userModel->add(
-                [
-                    'login' => $login,
-                    'pass' => 'admin',
-                    'main' => 1,
-                ]
-            );
-            Route::redirect('admin', 'index');
-        }
-    }
 }

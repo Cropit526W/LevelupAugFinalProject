@@ -18,7 +18,6 @@ class Model
         } catch (mysqli_sql_exception $exception) {
             if ($exception->getCode() === 1049) {
                 CreateDB::create();
-                AdminController::addAdmin();
                 $this->createDefaultDbClass();
             } else {
                 exit('Some problem with connection to database');
