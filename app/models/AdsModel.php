@@ -76,12 +76,15 @@ class AdsModel extends Model
                 $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
                 $fileName = uniqid().'.'.$extension;
                 $filePath = self::PHOTO_UPLOAD_DIR . '/' . $fileName;
+                if(!is_dir(self::PHOTO_UPLOAD_DIR)){
+                    mkdir(self::PHOTO_UPLOAD_DIR);
+                }
                 self::photoDbAdd($fileName, $filePath);
                 if (!move_uploaded_file($file['tmp_name'], $filePath)) {
                     $this->tmpErrors[] = 'Tmp file was not moved';
                 }
             }
-            //TODO excemptions and logs
+            //TODO exceptions and logs
 //        }
 
     }
@@ -101,7 +104,7 @@ class AdsModel extends Model
                     $photoErrors[] = 'Tmp file was not moved';
                 }
             }
-        //TODO excemptions and logs
+        //TODO exceptions and logs
     }
 
     public function photoDbAdd($name, $path){
