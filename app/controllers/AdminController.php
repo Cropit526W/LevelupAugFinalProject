@@ -17,7 +17,7 @@ class AdminController extends AbstractController
      * Let's display view admin_index.php
      * @return void
      */
-    public function index() : void
+    public function index()
     {
         $this->view->render(
             'admin_index'
