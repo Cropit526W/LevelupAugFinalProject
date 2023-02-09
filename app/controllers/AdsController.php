@@ -28,12 +28,17 @@ class AdsController extends AdminController
     }
 
 
+    /**
+     * @return void
+     */
     public function create()
     {
         $this->view->render('ads_create');
     }
 
-
+    /**
+     * @return void
+     */
     public function store()
     {
         if (!empty($_FILES['photos'])) {
@@ -47,7 +52,9 @@ class AdsController extends AdminController
                 }
             }
             //TODO validate
-            if ($_SERVER['REQUEST_URI'] !== url('ads', 'create')) {
+            $requestStr = explode('/', $_SERVER['HTTP_REFERER']);
+            $desiredStr = '/'."$requestStr[3]".'/'."$requestStr[4]";
+            if ($desiredStr != url('ads', 'create')) {
                 $adsPhotoErrors = $this->validate->fileValidate($file);
                 $ad_id = array_key_first($_POST);
                 if (count($adsPhotoErrors) !== 0) {
