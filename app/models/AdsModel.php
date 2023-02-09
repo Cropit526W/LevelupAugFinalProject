@@ -42,7 +42,7 @@ class AdsModel extends Model
     public function getAllIndexPage($from, $elements)
     {
         if ($this->paginator->adsCount() > 0) {
-            $sql = "SELECT * FROM ads LIMIT {$from}, {$elements}";
+            $sql = "SELECT * FROM ads ORDER BY ads.created_at DESC LIMIT {$from}, {$elements}";
             $result = $this->db->query($sql);
             $ads = [];
             while ($row = $result->fetch_assoc()) {
