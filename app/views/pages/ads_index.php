@@ -51,23 +51,22 @@
                             <?php session_start(); ?>
                             <?php if (!empty($_SESSION['errorsList'])): ?>
                                 <?php $errorsList = $_SESSION['errorsList'];?>
-                                <?php unset($_SESSION['errorsList']);?>
                                 <div>
                                     <?php foreach ($errorsList as $error):?>
-                                        <span class="errors"><?=$error?></span>
+                                        <div class="errors"><?=$error?></div>
                                     <?php endforeach;?>
                                 </div>
                             <?php endif;?>
                                 <div class="photoList">
                                     <?php foreach ($allPhotos as $photo):?>
-                                        <?php if ($photo['name'] === $ad['name']):?>
-                                            <div class="photosForUpdating">
-                                                <img src="<?= DIRECTORY_SEPARATOR.$photo['url']?>"/>
-                                                <form action="<?= url('ads', 'destroy')?>" method="post">
-                                                    <input type="hidden" name="<?= $ad['id']?>" value="<?= $photo['url']?>">
-                                                    <button><i class="fa fa-trash" style="font-size:24px"></i></button>
-                                                </form>
-                                            </div>
+                                        <?php if ($photo['vendor_code'] === $ad['vendor_code']):?>
+                                                <div class="photosForUpdating">
+                                                    <img src="<?= DIRECTORY_SEPARATOR.$photo['url']?>"/>
+                                                    <form action="<?= url('ads', 'destroy')?>" method="post">
+                                                        <input type="hidden" name="<?= $ad['id']?>" value="<?= $photo['url']?>">
+                                                        <button><i class="fa fa-trash" style="font-size:24px"></i></button>
+                                                    </form>
+                                                </div>
                                         <?php endif;?>
                                     <?php endforeach;?>
                                     <!-- TODO validation of count of photos -->
@@ -81,8 +80,6 @@
                                         </form>
                                     </div>
                                 </div>
-
-
                         </div>
                     </th>
                     <th>
@@ -96,3 +93,4 @@
 <div class="w3-bar w3-green backBox">
     <a href="<?= url('admin', 'index')?>" class="w3-bar-item w3-button"><i class="fa fa-arrow-left"></i></a>
 </div>
+<?php unset($_SESSION['errorsList']);
