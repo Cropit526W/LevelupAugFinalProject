@@ -89,13 +89,15 @@ div.newAdBox .w3-card-4 {
     transform: translate(-50%, -50%);
     z-index: 999;
     pointer-events: none;
-    opacity: 0;
+    /*opacity: 0;*/
+    display: none;
     overflow: hidden;
     background-color: #fff;
 }
 
 .modal_dialog:target {
-    opacity: 1;
+    /*opacity: 1;*/
+    display: block;
     top: 50%;
     pointer-events: auto;
     /*transition-duration: 500ms;*/
