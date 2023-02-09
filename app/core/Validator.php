@@ -128,8 +128,11 @@ class Validator
         if (empty($phone)) {
             $this->adsTextErrors['phone'] = 'Не введён номер телефона автора !';
         }
-        if (strlen($phone) < 10) {
-            $this->adsTextErrors['countNumbersInPhone'] = 'Номер телефона должен состоять не менее чем из 10 символов !';
+        if (strlen($phone) < 10 || strlen($phone) > 15) {
+            $this->adsTextErrors['countNumbersInPhone'] = 'Номер телефона должен состоять не менее чем из 10 символов и не более чем из 16!';
+        }
+        if (!filter_var($phone, FILTER_VALIDATE_INT)){
+            $this->adsTextErrors['phone'] = 'Недопустимый формат телефона';
         }
         return $this->adsTextErrors;
     }
