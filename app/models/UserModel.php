@@ -35,9 +35,9 @@ class UserModel extends Model
     /**
      * Let's get the user from the database
      * @param string $login
-     * @return array
+     * @return array|null
      */
-    public function get(string $login) : array
+    public function get(string $login) : array|null
     {
         $sql = "SELECT * FROM $this->table WHERE login = '$login' LIMIT 1";
         $result = $this->db->query($sql);
