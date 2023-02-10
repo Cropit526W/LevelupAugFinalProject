@@ -7,6 +7,9 @@ use app\models\UserModel;
 class Validator
 {
 
+    /**
+     * Upload error description list
+     */
     const UPLOAD_ERROR_DESCRIPTION_LIST = [
         0 => 'There is no error, the file uploaded with success',
         1 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini',
@@ -18,21 +21,38 @@ class Validator
         8 => 'A PHP extension stopped the file upload.',
     ];
 
+    /**
+     * Acceptable photo types
+     */
     const PHOTO_UPLOAD_AVAILABLE_TYPES = [
         'image/jpeg',
         'image/png',
         'image/gif',
     ];
 
+    /**
+     * The maximum size of the photo to be uploaded
+     */
     const PHOTO_UPLOAD_MAX_SIZE = 10 * 1024 * 1024;
 
-
+    /**
+     * @var array
+     */
     protected array $errors = [];
 
+    /**
+     * @var array
+     */
     public array $adsPhotoErrors = [];
 
+    /**
+     * @var array
+     */
     protected array $adsTextErrors = [];
 
+    /**
+     * @var Session
+     */
     protected $session;
 
     public function __construct()
@@ -40,25 +60,6 @@ class Validator
         $this->model = new UserModel();
         $this->session = new Session();
 
-    }
-
-    public function validateName($name)
-    {
-        if (empty($name)) {
-            $this->errors[] = 'Name can not be empty';
-        }
-        if (strlen($name)<5) {
-            $this->errors[] = 'Name must be greater then 10 characters';
-        }
-        if (count($this->errors)>0){
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    public function getErrors() {
-        return $this->errors;
     }
 
     /**
@@ -74,6 +75,11 @@ class Validator
         return $this->errors;
     }
 
+    /**
+     * Check the presence of a new user in the database
+     * @param $user
+     * @return array
+     */
     public function validateAddUser($user) : array
     {
         if (!empty($this->model->get($user['login']))) {
@@ -134,14 +140,18 @@ class Validator
         return $this->adsTextErrors;
     }
 
-    public function setErrors ($errorsInFilesText = [], $errorsInTextList = []): void
+    /**
+     * An array of ad errors is filled
+     * @param $errorsInFilesText
+     * @param $errorsInTextList
+     * @return void
+     */
+    public function setErrors($errorsInFilesText = [], $errorsInTextList = []): void
     {
         $errorsList = array_merge($errorsInFilesText, $errorsInTextList);
         session_start();
         $_SESSION['errorsList'] = $errorsList;
     }
-
-
 
     /**
      * Returns a list of errors about delete the user

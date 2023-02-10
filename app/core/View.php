@@ -4,6 +4,9 @@ namespace app\core;
 
 class View
 {
+    /**
+     * Catalog of views
+     */
     const VIEWS_DIR = '..'.DIRECTORY_SEPARATOR.'app'.DIRECTORY_SEPARATOR.'views';
 
     /**

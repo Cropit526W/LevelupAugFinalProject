@@ -4,8 +4,15 @@ namespace app\core;
 
 class Route
 {
+    /**
+     * Catalog of controllers
+     */
     const CONTROLLER_NAMESPACE = 'app\controllers\\';
 
+    /**
+     * Page initialization
+     * @return void
+     */
     public static function init(): void
     {
         session_start();
@@ -52,7 +59,13 @@ class Route
         self::callAction($controller, $actionName);
     }
 
-    public static function ifTryingToAccessAdmin($controllerName, $actionName)
+    /**
+     * Check if not authenticated user trying to access admin pages
+     * @param $controllerName
+     * @param $actionName
+     * @return bool
+     */
+    public static function ifTryingToAccessAdmin($controllerName, $actionName) : bool
     {
         return (
             (
@@ -63,11 +76,19 @@ class Route
         );
     }
 
-    public static function isAuthorized()
+    /**
+     * Checks if the user is authorized
+     * @return bool
+     */
+    public static function isAuthorized() : bool
     {
         return !empty($_SESSION['authorized']);
     }
 
+    /**
+     * Set the HTTP response code - 404
+     * @return void
+     */
     public static function notFound(): void
     {
         http_response_code(404);
@@ -75,11 +96,23 @@ class Route
         exit();
     }
 
+    /**
+     * Call action of controller
+     * @param indexable $controller
+     * @param $action
+     * @return void
+     */
     private static function callAction(indexable $controller, $action): void
     {
         $controller->$action();
     }
 
+    /**
+     * Generates the page url
+     * @param string|null $controller
+     * @param string|null $action
+     * @return string
+     */
     public static function url(string $controller = null, string $action = null): string
     {
         $controller = $controller ?? 'index';
@@ -87,6 +120,13 @@ class Route
         return "/{$controller}/{$action}";
     }
 
+    /**
+     * Redirect by url
+     * @param $controller
+     * @param $action
+     * @param $get
+     * @return void
+     */
     public static function redirect($controller, $action, $get = null): void
     {
         if ($get) {
